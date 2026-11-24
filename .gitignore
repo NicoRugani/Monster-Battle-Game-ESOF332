@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Maven build output
+target/
+
+# Course staff material: assignment specs, the autograder, lecture tooling and
+# copyrighted readings. Not mine to publish, and this repo is going public.
+# These files stay on disk locally, they are just no longer tracked.
+meta/
+justfile

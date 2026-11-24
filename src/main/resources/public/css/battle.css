@@ -1,0 +1,214 @@
+/* Battle Arena Styles with Monster Animations */
+
+.battle-arena {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 300px;
+    background: linear-gradient(to bottom, #87CEEB 0%, #98D8C8 100%);
+    border-radius: 10px;
+    padding: 40px 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Grass floor effect */
+.battle-arena::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, #2ecc71);
+    border-radius: 0 0 10px 10px;
+}
+
+.monster-sprite {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.monster-sprite img {
+    max-width: 150px;
+    max-height: 150px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Idle breathing animation */
+.monster-sprite.idle img {
+    animation: breathe 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.02); }
+}
+
+/* Attack animation - applies when monster attacks */
+.monster-sprite.attacking img {
+    animation: attack 0.6s ease-out;
+}
+
+@keyframes attack {
+    0% { transform: translateX(0) scale(1); }
+    30% { transform: translateX(-20px) scale(1.1) rotate(-5deg); }
+    60% { transform: translateX(30px) scale(1.15) rotate(5deg); }
+    100% { transform: translateX(0) scale(1) rotate(0deg); }
+}
+
+/* Taking damage animation */
+.monster-sprite.hit img {
+    animation: hit 0.5s ease-out;
+}
+
+@keyframes hit {
+    0%, 100% { transform: translateX(0); filter: brightness(1); }
+    25% { transform: translateX(-10px); filter: brightness(1.5) hue-rotate(180deg); }
+    75% { transform: translateX(10px); filter: brightness(1.5) hue-rotate(180deg); }
+}
+
+/* Fainted animation */
+.monster-sprite.fainted img {
+    animation: faint 1s ease-out forwards;
+}
+
+@keyframes faint {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(50px) rotate(90deg) scale(0.5); opacity: 0; }
+}
+
+/* Entry animation for new monsters */
+.monster-sprite.entering img {
+    animation: enter 0.8s ease-out;
+}
+
+@keyframes enter {
+    0% { transform: translateY(-100px) scale(0); opacity: 0; }
+    50% { transform: translateY(0) scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* Type-specific effects */
+.monster-sprite[data-type="fire"] {
+    filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5));
+}
+
+.monster-sprite[data-type="water"] {
+    filter: drop-shadow(0 0 10px rgba(0, 150, 255, 0.5));
+}
+
+.monster-sprite[data-type="grass"] {
+    filter: drop-shadow(0 0 10px rgba(50, 200, 50, 0.5));
+}
+
+.monster-sprite[data-type="electric"] {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.5));
+}
+
+/* Pulse effect for current attacker */
+.monster-sprite.current-turn img {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+    50% { filter: brightness(1.2) drop-shadow(0 0 15px rgba(255,255,255,0.8)); }
+}
+
+/* Monster name label */
+.monster-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    color: white;
+}
+
+/* HP bar styles */
+.hp-bar-container {
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 5px;
+    min-width: 150px;
+}
+
+.hp-text {
+    font-size: 12px;
+    color: white;
+    margin-bottom: 3px;
+    text-align: center;
+}
+
+.hp-bar {
+    background: #ddd;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(0,0,0,0.3);
+}
+
+.hp-fill {
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+    height: 100%;
+    transition: width 0.5s ease-out, background 0.3s;
+}
+
+.hp-fill.low {
+    background: linear-gradient(to bottom, #f39c12, #e67e22);
+}
+
+.hp-fill.critical {
+    background: linear-gradient(to bottom, #e74c3c, #c0392b);
+    animation: critical-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes critical-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Fallback for missing images */
+.monster-sprite img[src=""],
+.monster-sprite img:not([src]),
+.monster-sprite img[alt]:after {
+    content: attr(alt);
+    display: block;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Placeholder when image doesn't load */
+.monster-placeholder {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+    animation: breathe 2s ease-in-out infinite;
+}
+
+/* Type emoji placeholders */
+.monster-placeholder[data-type="fire"]::after { content: '🔥'; }
+.monster-placeholder[data-type="water"]::after { content: '💧'; }
+.monster-placeholder[data-type="grass"]::after { content: '🌿'; }
+.monster-placeholder[data-type="electric"]::after { content: '⚡'; }
+.monster-placeholder[data-type="normal"]::after { content: '⭐'; }
